@@ -29,4 +29,17 @@ class StatisticsMean : public StatisticsMC{
         unsigned long PathsDone;
 };
 
+class StatiticsMoments : public StatisticsMC{
+	public:
+		StatiticsMoments();
+
+		virtual void DumpOneResult(double result);
+		virtual std::vector<std::vector<double> > GetResultSoFar() const;
+		virtual StatisticsMC* clone() const;
+
+	private:
+		std::vector<double> values;
+
+};
+
 #endif // MCSTATISTICS_H_INCLUDED
