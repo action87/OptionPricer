@@ -42,4 +42,17 @@ class StatiticsMoments : public StatisticsMC{
 
 };
 
+class StatisticsVaR : public StatisticsMC{
+	public:
+		StatisticsVaR(double percentile);
+
+		virtual void DumpOneResult(double result);
+		virtual std::vector<std::vector<double> > GetResultSoFar() const;
+		virtual StatisticsMC* clone() const;
+
+	private:
+		std::vector<double> values;
+		double percentile;
+};
+
 #endif // MCSTATISTICS_H_INCLUDED
