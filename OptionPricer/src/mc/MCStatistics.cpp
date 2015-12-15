@@ -2,7 +2,7 @@
 #include <math.h>		// pow, sqrt
 #include <numeric>      // std::accumulate
 #include <algorithm>    // std::sort
-#include <iostream>
+//#include <iostream>
 
 using namespace std;
 
@@ -84,18 +84,25 @@ StatisticsVaR::StatisticsVaR(double _percentile):percentile(_percentile){}
 
 void StatisticsVaR::DumpOneResult(double result){
 	values.push_back(result);
-	sort (values.begin(), values.begin());
 }
 
 vector<vector<double> > StatisticsVaR::GetResultSoFar() const{
+
+	vector<double> copyOfValues = values;
+	sort(copyOfValues.begin(), copyOfValues.end());
+
     vector<vector<double> > Results(1);
     Results[0].resize(2);
 
-    int indexOfPathMappedToPercentile = percentile * values.size() + 1;
-    cout<< "indexOfPathMappedToPercentile: "<< indexOfPathMappedToPercentile << endl;
+    int indexOfPathMappedToPercentile = percentile * values.size();
+    //cout<< "indexOfPathMappedToPercentile: "<< indexOfPathMappedToPercentile << endl;
 
     Results[0][0] = percentile;
-    Results[0][1] = values[indexOfPathMappedToPercentile];
+    Results[0][1] = copyOfValues[indexOfPathMappedToPercentile];
+
+    /*for(vector<double>::const_iterator it = values.begin();it!=values.end();it++){
+    	cout<< "values[] "<< *it << endl;
+    }*/
 
     return Results;
 }
