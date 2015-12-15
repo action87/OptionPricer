@@ -18,6 +18,7 @@ class RandomBase{
         virtual void GetGaussians(MJArray& variates);
         virtual void ResetDimensionality(unsigned long NewDimensionality);
 
+        virtual ~RandomBase(){}
     private:
         unsigned long Dimensionality;
 };
