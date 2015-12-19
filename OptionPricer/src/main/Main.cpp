@@ -7,8 +7,67 @@
 #include "../mc/MCStatistics.h"
 #include "../mc/ConvergenceTable.h"
 #include <iostream>
+#include "../exoticEngine/PathDependentAsian.h"
+#include "../exoticEngine/ExoticBSEngine.h"
 
 using namespace std;
+
+void testingEquityFX();
+void testingRandom();
+void testingMoments();
+void testingMean();
+void testingVar();
+
+int main(){
+
+	cout << "Test"<<endl;
+	testingEquityFX();
+    return 0;
+}
+
+
+void testingEquityFX(){
+	double Expiry=1;
+	double Strike=100;
+	double Spot=200;
+	ParametersConstant VolParam(0.1);
+	ParametersConstant rParam(0);
+	ParametersConstant dParam(0);
+	unsigned long NumberOfDates = 6;
+	unsigned long NumberOfPaths=100000;
+
+	PayOffCall thePayOff(Strike);
+	MJArray times(NumberOfDates);
+
+	for(unsigned long i=0;i<NumberOfDates;i++){
+		times[i]=(i+1.0) *Expiry*NumberOfDates;
+	}
+
+	PathDependentAsian theOption(times, Expiry, thePayOff);
+
+	StatisticsMean gatherer;
+	ConvergenceTable gathererTwo(gatherer);
+
+	RandomParkMiller generator(1, 1564);
+	AntiThetic GenTwo(generator);
+
+	ExoticBSEngine theEngine(theOption, rParam, dParam, VolParam, GenTwo, Spot);
+
+	theEngine.DoSimulation(gathererTwo, NumberOfPaths);
+
+	vector<vector<double> > results = gathererTwo.GetResultSoFar();
+
+	cout <<"\nFor the Asian call price the results are " << endl;
+
+	for (unsigned long i=0; i < results.size(); i++)
+		{
+			for (unsigned long j=0; j < results[i].size(); j++){
+				cout << results[i][j] << " ";
+			}
+
+			cout << "\n";
+		}
+}
 
 void testingRandom(){
 	double Expiry=1;
@@ -149,11 +208,3 @@ void testingVar(){
 
 
 }
-
-
-int main(){
-
-	testingRandom();
-    return 0;
-}
-
