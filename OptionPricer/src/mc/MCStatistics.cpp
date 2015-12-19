@@ -21,6 +21,10 @@ vector<vector<double> > StatisticsMean::GetResultSoFar() const{
     return Results;
 }
 
+string StatisticsMean::name() const {
+	return "Mean";
+}
+
 StatisticsMC* StatisticsMean::clone() const{
     return new StatisticsMean(*this);
 }
@@ -33,6 +37,10 @@ void StatiticsMoments::DumpOneResult(double result){
 
 StatisticsMC* StatiticsMoments::clone() const{
     return new StatiticsMoments(*this);
+}
+
+string StatiticsMoments::name() const {
+	return "Moments";
 }
 
 vector<vector<double> > StatiticsMoments::GetResultSoFar() const{
@@ -105,6 +113,10 @@ vector<vector<double> > StatisticsVaR::GetResultSoFar() const{
     }*/
 
     return Results;
+}
+
+string StatisticsVaR::name() const {
+	return "Var";
 }
 
 StatisticsMC* StatisticsVaR::clone() const{

@@ -23,6 +23,10 @@ void ConvergenceTable::DumpOneResult(double result){
     return;
 }
 
+std::string ConvergenceTable::name() const {
+	return "ConvergenceTable";
+}
+
 std::vector<std::vector<double> > ConvergenceTable::GetResultSoFar() const{
     std::vector<std::vector<double> > tmp(ResultSoFar);
 
