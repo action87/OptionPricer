@@ -4,6 +4,7 @@
 #include "MCStatistics.h"
 #include "../utils/Wrapper.h"
 #include <vector>
+#include <string>
 
 class ConvergenceTable : public StatisticsMC{
     public:
@@ -11,6 +12,7 @@ class ConvergenceTable : public StatisticsMC{
 
         virtual void DumpOneResult(double result);
         virtual std::vector<std::vector<double> > GetResultSoFar() const;
+        virtual const std::string name() const;
         virtual StatisticsMC* clone() const;
 
     private:
