@@ -57,11 +57,13 @@ void testingStatisticGatherer(){
 	SimpleMonteCarlo(theOption, Spot,VolParam,rParam,NumberOfPaths, gatherer, GenTwo);
 
 	vector<vector<double> > results = gatherer.GetResultSoFar();
+	vector<string> resultOrder = gatherer.getStatOrder();
 
-	cout <<"\nThe moments are: " << endl;
+	cout <<"\nThe statistics are: " << endl;
 
 	for (unsigned long i=0; i < results.size(); i++)
 		{
+			cout<< resultOrder[i] << " : ";
 			for (unsigned long j=0; j < results[i].size(); j++)
 			cout << results[i][j] << " ";
 			cout << "\n";

@@ -6,6 +6,8 @@
  */
 
 #include "StatisticGatherer.h"
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -17,7 +19,7 @@ StatisticGatherer::StatisticGatherer(const map<string, Wrapper<StatisticsMC> > I
 
 StatisticGatherer::StatisticGatherer(const vector<Wrapper<StatisticsMC> > StatisticClasses_){
 	for(unsigned int i=0; i < StatisticClasses_.size();i++){
-		InnerStatistics.insert(pair<string, Wrapper<StatisticsMC> >(StatisticClasses_[i]->name(), StatisticClasses_[i]) );
+		InnerStatistics.insert(pair<const string, Wrapper<StatisticsMC> >(StatisticClasses_[i]->name(), StatisticClasses_[i]) );
 	}
 }
 
@@ -28,7 +30,7 @@ void StatisticGatherer::DumpOneResult(double result){
 	}
 }
 
-string StatisticGatherer::name() const {
+const string StatisticGatherer::name() const {
 	return "Statistics Gatherer";
 }
 
@@ -36,15 +38,13 @@ string StatisticGatherer::name() const {
 vector<vector<double> > StatisticGatherer::GetResultSoFar() const{
 
 	vector<vector<double> > results;
-	unsigned int resultsSize=0UL;
 
 	for (map<string, Wrapper<StatisticsMC> >::const_iterator it=InnerStatistics.begin(); it!=InnerStatistics.end(); ++it){
 		vector<vector<double> > innerResult = it->second->GetResultSoFar();
-		//results.push_back(innerResult);
+		results.insert(results.end(), innerResult.begin(), innerResult.end());
 		for(unsigned int i=0;i<innerResult.size();i++){
-			//ResultOrder[resultsSize + i] = name;
+			ResultOrder.push_back(it->first);
 		}
-		resultsSize = results.size();
 	}
 
 	return results;
@@ -54,6 +54,9 @@ StatisticsMC* StatisticGatherer::clone() const{
     return new StatisticGatherer(*this);
 }
 
+vector<string> StatisticGatherer::getStatOrder(){
+	return ResultOrder;
+}
 
 
 

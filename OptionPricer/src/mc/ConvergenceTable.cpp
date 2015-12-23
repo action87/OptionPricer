@@ -23,7 +23,7 @@ void ConvergenceTable::DumpOneResult(double result){
     return;
 }
 
-std::string ConvergenceTable::name() const {
+const std::string ConvergenceTable::name() const {
 	return "ConvergenceTable";
 }
 

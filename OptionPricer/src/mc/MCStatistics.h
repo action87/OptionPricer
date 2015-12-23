@@ -10,7 +10,7 @@ class StatisticsMC{
 
         virtual void DumpOneResult(double result)=0;
         virtual std::vector<std::vector<double> > GetResultSoFar() const=0;
-        virtual std::string name() const=0;
+        virtual const std::string name() const=0;
         virtual StatisticsMC* clone() const=0;
         virtual ~StatisticsMC(){}
 
@@ -24,7 +24,7 @@ class StatisticsMean : public StatisticsMC{
 
         virtual void DumpOneResult(double result);
         virtual std::vector<std::vector<double> > GetResultSoFar() const;
-        virtual std::string name() const;
+        virtual const std::string name() const;
         virtual StatisticsMC* clone() const;
 
     private:
@@ -38,7 +38,7 @@ class StatiticsMoments : public StatisticsMC{
 
 		virtual void DumpOneResult(double result);
 		virtual std::vector<std::vector<double> > GetResultSoFar() const;
-		virtual std::string name() const;
+		virtual const std::string name() const;
 		virtual StatisticsMC* clone() const;
 
 	private:
@@ -52,7 +52,7 @@ class StatisticsVaR : public StatisticsMC{
 
 		virtual void DumpOneResult(double result);
 		virtual std::vector<std::vector<double> > GetResultSoFar() const;
-		virtual std::string name() const;
+		virtual const std::string name() const;
 		virtual StatisticsMC* clone() const;
 
 	private:

@@ -12,7 +12,7 @@ class ConvergenceTable : public StatisticsMC{
 
         virtual void DumpOneResult(double result);
         virtual std::vector<std::vector<double> > GetResultSoFar() const;
-        virtual std::string name() const;
+        virtual const std::string name() const;
         virtual StatisticsMC* clone() const;
 
     private:

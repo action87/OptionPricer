@@ -1,3 +1,4 @@
+
 /*
  * StatisticGatherer.h
  *
@@ -8,10 +9,10 @@
 #ifndef MC_STATISTICGATHERER_H_
 #define MC_STATISTICGATHERER_H_
 
-#include <map>
 #include <string>
 #include "MCStatistics.h"
 #include "../utils/Wrapper.h"
+#include <map>
 
 
 //TODO Implement the exercise 5.3.
@@ -21,13 +22,14 @@ class StatisticGatherer : public StatisticsMC{
 		StatisticGatherer(const std::vector<Wrapper<StatisticsMC> > StatisticClasses_);
 		virtual void DumpOneResult(double result);
 		virtual std::vector<std::vector<double> > GetResultSoFar() const;
-		std::string name() const;
+		virtual const std::string name() const;
 		virtual StatisticsMC* clone() const;
 		virtual ~StatisticGatherer(){}
+		std::vector<std::string> getStatOrder();
 
 	private:
 		std::map<std::string, Wrapper<StatisticsMC> > InnerStatistics;
-		std::vector<std::string> ResultOrder;
+		mutable std::vector<std::string> ResultOrder;
 
 };
 
