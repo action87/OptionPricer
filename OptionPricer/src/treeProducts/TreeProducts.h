@@ -16,7 +16,7 @@ public:
 
 	virtual ~TreeProduct(){}
 	virtual TreeProduct* clone() const=0;
-	double GetFinalValue() const;
+	double GetFinalTime() const;
 
 private:
 	double FinalTime;

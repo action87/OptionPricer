@@ -10,6 +10,6 @@
 
 TreeProduct::TreeProduct(double FinalTime_): FinalTime(FinalTime_){}
 
-double TreeProduct::GetFinalValue() const{
+double TreeProduct::GetFinalTime() const{
 	return FinalTime;
 }

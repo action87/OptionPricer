@@ -10,6 +10,12 @@
 #include "../exoticEngine/PathDependentAsian.h"
 #include "../exoticEngine/ExoticBSEngine.h"
 #include "../mc/StatisticGatherer.h"
+#include "../tree/BinomialTree.h"
+#include "../treeProducts/TreeProducts.h"
+#include "../treeProducts/TreeAmerican.h"
+#include "../treeProducts/TreeEuropean.h"
+#include "../bs/BlackScholesFormulas.h"
+
 
 using namespace std;
 
@@ -19,12 +25,44 @@ void testingMoments();
 void testingMean();
 void testingVar();
 void testingStatisticGatherer();
+void treeMain();
 
 int main(){
 
-	cout << "Test"<<endl;
+	cout << "treeMain: "<<endl;
+	treeMain();
+
+	cout<<"\ntestingStatisticGatherer: "<< endl;
 	testingStatisticGatherer();
+
+	//TODO: the differences among BS pricer, Binomial tree and MC need to be checked
     return 0;
+}
+
+void treeMain(){
+	double Expiry=1;
+	double Strike=100;
+	double Spot=100;
+	double Vol=0.1;
+	unsigned long Steps = 1000;
+	double r=0.0;
+	double d=0.0;
+	ParametersConstant rParam(r);
+	ParametersConstant dParam(d);
+
+	PayOffCall thePayOff(Strike);
+
+	TreeEuropean europeanOption(Expiry, thePayOff);
+	TreeAmerican americanOption(Expiry, thePayOff);
+	SimpleBinomialTree theTree(Spot, rParam, dParam, Vol, Steps, Expiry);
+
+	double euroPrice=theTree.GetPrice(europeanOption);
+	double americanPrice = theTree.GetPrice(americanOption);
+
+	cout<< "European Price: " << euroPrice << ", American price: " << americanPrice<< endl;
+
+	double BSPrice = BlackScholesCall(Spot, Strike, r,d, Vol, Expiry );
+	cout << "BS formula euro price " << BSPrice<< endl;
 }
 
 void testingStatisticGatherer(){
@@ -51,7 +89,7 @@ void testingStatisticGatherer(){
 
 	StatisticGatherer gatherer(statisticGatherer);
 
-	RandomParkMiller generator(15);
+	RandomParkMiller generator(1);
 	AntiThetic GenTwo(generator);
 
 	SimpleMonteCarlo(theOption, Spot,VolParam,rParam,NumberOfPaths, gatherer, GenTwo);
