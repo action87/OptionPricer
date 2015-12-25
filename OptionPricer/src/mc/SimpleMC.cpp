@@ -1,6 +1,7 @@
 #include "SimpleMC.h"
 #include <cmath>
 #include "../utils/Arrays.h"
+#include <iostream>
 
 // namespace std but aren’t in VCPP6
 #if !defined(_MSC_VER)
@@ -19,10 +20,13 @@ void SimpleMonteCarlo(const VanillaOption& TheOption,
     double Expiry=TheOption.GetExpiry();
 
     double variance=Vol.IntegralSquare(0,Expiry);
+    cout<< "variance= " << variance << endl;
     double rootVariance = sqrt(variance);
     double itoCorrection = -0.5 * variance;
+    cout<< "itoCorrection= " << itoCorrection << endl;
 
     double movedSpot = Spot * exp(r.Integral(0,Expiry) + itoCorrection);
+    cout<< "movedSpot= " << movedSpot << endl;
     double thisSpot;
     double discounting=exp(-r.Integral(0,Expiry));
 
@@ -30,9 +34,10 @@ void SimpleMonteCarlo(const VanillaOption& TheOption,
 
     for (unsigned long i=0; i < NumberOfPaths; i++){
         generator.GetGaussians(VariateArray);
+        //cout<< VariateArray[0]<< endl;
         thisSpot = movedSpot*exp( rootVariance*VariateArray[0]);
+        //cout<< "thisSpot= " << thisSpot << endl;
         double thisPayoff = TheOption.OptionPayOff(thisSpot);
         gatherer.DumpOneResult(thisPayoff * discounting);
-
     }
  }

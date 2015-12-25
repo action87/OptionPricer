@@ -83,10 +83,10 @@ double CumulativeNormal(double x){
         result = NormalDensity(x)/sqrt(1. + x*x);
     }else{
         if(x>7.0){
-            result = 1- CumulativeNormal(-x);
+            result = 1.0 - CumulativeNormal(-x);
         }else{
             double tmp = 1.0/(1.0 + 0.2316419*fabs(x));
-            result = 1-NormalDensity(x)*(tmp*(a[0]+tmp*(a[1] + tmp*(a[2]+tmp*(a[3] + a[4])))));
+            result = 1.0 - NormalDensity(x)*(tmp*(a[0]+tmp*(a[1] + tmp*(a[2]+tmp*(a[3] + tmp*a[4])))));
             if(x<=0){
                 result = 1.0-result;
             }

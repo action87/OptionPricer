@@ -42,7 +42,7 @@ void SimpleBinomialTree::BuildTree(){
 		double thisTime = (i*Time)/Steps;
 
 		double movedLogSpot = InitialLogSpot + r.Integral(0.0, thisTime) - d.Integral(0.0, thisTime);
-		movedLogSpot -= 0.5 * Volatility *thisTime;
+		movedLogSpot -= 0.5 * Volatility * Volatility* thisTime;
 		double sd = Volatility * sqrt(Time/Steps);
 
 		for(long j = - static_cast<long>(i), k=0 ; j<= static_cast<long>(i); j=j+2, k++  ){

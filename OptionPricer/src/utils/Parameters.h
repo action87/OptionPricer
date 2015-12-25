@@ -37,7 +37,7 @@ inline double Parameters::Integral(double time1, double time2) const{
 }
 
 inline double Parameters::IntegralSquare(double time1, double time2) const{
-    return InnerObjectPtr->Integral(time1,time2);
+    return InnerObjectPtr->IntegralSquare(time1,time2);
 }
 
 class ParametersConstant : public ParametersInner{

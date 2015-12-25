@@ -32,18 +32,18 @@ int main(){
 	cout << "treeMain: "<<endl;
 	treeMain();
 
-	cout<<"\ntestingStatisticGatherer: "<< endl;
-	testingStatisticGatherer();
+	cout<<"\ntestingMean: "<< endl;
+	testingMean();
 
 	//TODO: the differences among BS pricer, Binomial tree and MC need to be checked
     return 0;
 }
 
 void treeMain(){
-	double Expiry=1;
+	double Expiry=2;
 	double Strike=100;
 	double Spot=100;
-	double Vol=0.1;
+	double Vol=0.01;
 	unsigned long Steps = 1000;
 	double r=0.0;
 	double d=0.0;
@@ -70,7 +70,7 @@ void testingStatisticGatherer(){
 	double Strike=100;
 	double Spot=100;
 	ParametersConstant VolParam(0.1);
-	ParametersConstant rParam(0);
+	ParametersConstant rParam(0.05);
 	unsigned long NumberOfPaths=10000;
 
 	PayOffCall payOffCall(Strike);
@@ -226,11 +226,11 @@ void testingMoments(){
 
 void testingMean(){
 
-	double Expiry=1;
+	double Expiry=2;
 	double Strike=100;
 	double Spot=100;
-	ParametersConstant VolParam(0.1);
-	ParametersConstant rParam(0);
+	ParametersConstant VolParam(0.01);
+	ParametersConstant rParam(0.0);
 	unsigned long NumberOfPaths=10000;
 
 	PayOffCall payOffCall(Strike);
@@ -239,14 +239,14 @@ void testingMean(){
 
 	StatisticsMean gatherer;
 
-	RandomParkMiller generator(15);
+	RandomParkMiller generator(1);
 	AntiThetic GenTwo(generator);
 
 	SimpleMonteCarlo(theOption, Spot,VolParam,rParam,NumberOfPaths, gatherer, GenTwo);
 
 	vector<vector<double> > results = gatherer.GetResultSoFar();
 
-	cout <<"\nThe moments are: " << endl;
+	cout <<"\nThe mean is: " << endl;
 
 	for (unsigned long i=0; i < results.size(); i++)
 		{
