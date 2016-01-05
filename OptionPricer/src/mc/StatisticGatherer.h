@@ -15,7 +15,7 @@
 #include <map>
 
 
-//TODO Implement the exercise 5.3.
+
 class StatisticGatherer : public StatisticsMC{
 	public:
 		StatisticGatherer(const std::map<std::string, Wrapper<StatisticsMC> > InnerStatistics_);

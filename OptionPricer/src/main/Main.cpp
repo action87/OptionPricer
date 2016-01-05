@@ -15,6 +15,10 @@
 #include "../treeProducts/TreeAmerican.h"
 #include "../treeProducts/TreeEuropean.h"
 #include "../bs/BlackScholesFormulas.h"
+#include "../payoff/PayOffForward.h"
+#include <cmath>
+#include "../bs/BsCallClass.h"
+#include "../utils/Bisection.h"
 
 
 using namespace std;
@@ -26,26 +30,43 @@ void testingMean();
 void testingVar();
 void testingStatisticGatherer();
 void treeMain();
+void bisectionMain();
 
 int main(){
 
-	cout << "treeMain: "<<endl;
 	treeMain();
+	bisectionMain();
 
-	cout<<"\ntestingMean: "<< endl;
-	testingMean();
-
-	//TODO: the differences among BS pricer, Binomial tree and MC need to be checked
     return 0;
 }
 
-void treeMain(){
-	double Expiry=2;
-	double Strike=100;
+void bisectionMain(){
+	double Expiry=1;
+	double Strike=98;
 	double Spot=100;
-	double Vol=0.01;
+	double Price=10;
+	double r=0.04;
+	double d=0.0;
+
+	double low=0.0;
+	double high=2.0;
+	double tolerance =0.00001;
+
+	BSCall theCall(r, d, Expiry, Spot, Strike);
+
+	double vol = Bisection(Price, low, high, tolerance, theCall);
+	double PriceTwo = BlackScholesCall(Spot, Strike, r, d, vol, Expiry);
+
+	cout << "vol = " << vol << " priceTwo = " << PriceTwo << endl;
+}
+
+void treeMain(){
+	double Expiry=1;
+	double Strike=97;
+	double Spot=100;
+	double Vol=0.0;
 	unsigned long Steps = 1000;
-	double r=0.0;
+	double r=0.04;
 	double d=0.0;
 	ParametersConstant rParam(r);
 	ParametersConstant dParam(d);
@@ -63,6 +84,35 @@ void treeMain(){
 
 	double BSPrice = BlackScholesCall(Spot, Strike, r,d, Vol, Expiry );
 	cout << "BS formula euro price " << BSPrice<< endl;
+
+	PayOffForward forwardPayOff(Strike);
+	TreeEuropean forward(Expiry, forwardPayOff);
+
+	double forwardPrice = theTree.GetPrice(forward);
+	cout << "forward price price by tree: " << forwardPrice << endl;
+
+	double actualForwardPrice = exp(-r*Expiry) * (Spot * exp((r-d)* Expiry) - Strike);
+	cout << "forward price price by formula: " << actualForwardPrice << endl;
+
+	Steps++; // now redo the trees with one more step
+
+	SimpleBinomialTree theNewTree(Spot, rParam, dParam, Vol, Steps, Expiry);
+
+	double euroNewPrice=theNewTree.GetPrice(europeanOption);
+	double americanNewPrice = theNewTree.GetPrice(americanOption);
+
+	cout<< "New European Price: " << euroNewPrice << ", New American price: " << americanNewPrice<< endl;
+
+	double forwardNewPrice = theNewTree.GetPrice(forward);
+	cout << "new forward price price by tree: " << forwardNewPrice << endl;
+
+	double averageEuro = 0.5 * (euroNewPrice + euroPrice);
+	double averageAmerican = 0.5 * (americanNewPrice + americanPrice);
+	double averageForward = 0.5 * (forwardNewPrice + forwardPrice);
+
+	cout<< "Avg European Price: " << averageEuro << ", Avg American price: " << averageAmerican<< endl;
+	cout << "Avg forward price price by tree: " << averageForward << endl;
+
 }
 
 void testingStatisticGatherer(){
@@ -71,7 +121,7 @@ void testingStatisticGatherer(){
 	double Spot=100;
 	ParametersConstant VolParam(0.1);
 	ParametersConstant rParam(0.05);
-	unsigned long NumberOfPaths=10000;
+	unsigned long NumberOfPaths=1000000;
 
 	PayOffCall payOffCall(Strike);
 
@@ -227,11 +277,11 @@ void testingMoments(){
 void testingMean(){
 
 	double Expiry=2;
-	double Strike=100;
+	double Strike=90;
 	double Spot=100;
-	ParametersConstant VolParam(0.01);
-	ParametersConstant rParam(0.0);
-	unsigned long NumberOfPaths=10000;
+	ParametersConstant VolParam(0.1);
+	ParametersConstant rParam(0.05);
+	unsigned long NumberOfPaths=1000000;
 
 	PayOffCall payOffCall(Strike);
 

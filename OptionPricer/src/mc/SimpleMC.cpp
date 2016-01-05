@@ -20,13 +20,13 @@ void SimpleMonteCarlo(const VanillaOption& TheOption,
     double Expiry=TheOption.GetExpiry();
 
     double variance=Vol.IntegralSquare(0,Expiry);
-    cout<< "variance= " << variance << endl;
+    //cout<< "variance= " << variance << endl;
     double rootVariance = sqrt(variance);
     double itoCorrection = -0.5 * variance;
-    cout<< "itoCorrection= " << itoCorrection << endl;
+    //cout<< "itoCorrection= " << itoCorrection << endl;
 
     double movedSpot = Spot * exp(r.Integral(0,Expiry) + itoCorrection);
-    cout<< "movedSpot= " << movedSpot << endl;
+    //cout<< "movedSpot= " << movedSpot << endl;
     double thisSpot;
     double discounting=exp(-r.Integral(0,Expiry));
 

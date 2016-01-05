@@ -69,7 +69,6 @@ double InverseCumulativeNormal(double u){
 
 
 //standard normal cumulative distribution function
-//TODO
 double CumulativeNormal(double x){
     static double a[5] = {  0.319381530,
                             -0.356563782,

@@ -34,7 +34,6 @@ const string StatisticGatherer::name() const {
 	return "Statistics Gatherer";
 }
 
-//TODO The main part is commented and not checked
 vector<vector<double> > StatisticGatherer::GetResultSoFar() const{
 
 	vector<vector<double> > results;

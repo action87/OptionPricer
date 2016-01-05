@@ -58,7 +58,6 @@ void RandomParkMiller::GetUniforms(MJArray& variates){
     }
 }
 
-//TODO --> Test as I don't understand
 void RandomParkMiller::Skip(unsigned long numberOfPaths){
     MJArray tmp(GetDimensionality());
     for(unsigned long j=0;j<numberOfPaths;j++){
