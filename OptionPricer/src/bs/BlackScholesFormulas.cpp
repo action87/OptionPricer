@@ -53,6 +53,7 @@ double BlackScholesDigitalPut( double Spot,double Strike,double r,double d,doubl
 
 double BlackScholesCallVega( double Spot, double Strike, double r, double d, double Vol, double Expiry){
 	double standardDeviation = Vol*sqrt(Expiry);
+
 	double moneyness = log(Spot/Strike);
 	double d1=( moneyness + (r-d)*Expiry + 0.5* standardDeviation*standardDeviation)/standardDeviation;
 	return Spot * exp(-d*Expiry) * sqrt(Expiry) * NormalDensity(d1);

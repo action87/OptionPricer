@@ -14,6 +14,9 @@ public:
 
 	double operator()(double Vol) const;
 
+	double Price(double Vol) const;
+	double Vega(double Vol) const;
+
 private:
 	double r;
 	double d;

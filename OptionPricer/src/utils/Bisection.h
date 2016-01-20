@@ -8,15 +8,15 @@
 #ifndef UTILS_BISECTION_H_
 #define UTILS_BISECTION_H_
 
-#include <iostream>
+//#include <iostream>
 
 template <class T>
 double Bisection(double Target, double Low, double High, double Tolerance, T TheFunction){
 
 	double x= 0.5*(Low+High);
-	std::cout << "x = " << x << std::endl;
+	//std::cout << "x = " << x << std::endl;
 	double y=TheFunction(x);
-	std::cout << "y = " << y << std::endl;
+	//std::cout << "y = " << y << std::endl;
 
 	do{
 
@@ -29,7 +29,7 @@ double Bisection(double Target, double Low, double High, double Tolerance, T The
 		}
 
 		x= 0.5*(Low+High);
-		std::cout << "x = " << x << std::endl;
+		//std::cout << "x = " << x << std::endl;
 		y=TheFunction(x);
 		//std::cout << "y = " << y << std::endl;
 

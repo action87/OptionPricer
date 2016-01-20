@@ -19,6 +19,7 @@
 #include <cmath>
 #include "../bs/BsCallClass.h"
 #include "../utils/Bisection.h"
+#include "../utils/NewtonRaphson.h"
 
 
 using namespace std;
@@ -31,13 +32,34 @@ void testingVar();
 void testingStatisticGatherer();
 void treeMain();
 void bisectionMain();
+void newtonRaphsonMain();
 
 int main(){
 
-	treeMain();
 	bisectionMain();
+	newtonRaphsonMain();
 
     return 0;
+}
+
+void newtonRaphsonMain(){
+	double Expiry=1;
+	double Strike=98;
+	double Spot=100;
+	double Price=10;
+	double r=0.04;
+	double d=0.0;
+
+	double start=0.1;
+	double tolerance =0.00001;
+
+	BSCall theCall(r, d, Expiry, Spot, Strike);
+	double vol = NewtonRaphson<BSCall, &BSCall::Price, &BSCall::Vega>(Price, start, tolerance, theCall);
+
+	double PriceTwo = BlackScholesCall(Spot, Strike, r, d, vol, Expiry);
+
+	cout << "vol = " << vol << " priceTwo = " << PriceTwo << endl;
+
 }
 
 void bisectionMain(){

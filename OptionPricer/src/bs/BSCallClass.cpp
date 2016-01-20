@@ -17,5 +17,10 @@ double BSCall::operator ()(double Vol) const{
 	return BlackScholesCall(Spot, Strike, r, d, Vol, T);
 }
 
+double BSCall::Price(double Vol) const{
+	return BlackScholesCall(Spot, Strike, r, d, Vol, T);
+}
 
-
+double BSCall::Vega(double Vol) const{
+	return BlackScholesCallVega(Spot, Strike, r, d, Vol, T);
+}
