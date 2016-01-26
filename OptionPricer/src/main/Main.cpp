@@ -20,6 +20,7 @@
 #include "../bs/BsCallClass.h"
 #include "../utils/Bisection.h"
 #include "../utils/NewtonRaphson.h"
+#include "../random/ParkMillerWithShuffling.h"
 
 
 using namespace std;
@@ -33,13 +34,47 @@ void testingStatisticGatherer();
 void treeMain();
 void bisectionMain();
 void newtonRaphsonMain();
+void testingParkMillerWithShuffle();
 
 int main(){
 
-	bisectionMain();
-	newtonRaphsonMain();
+	testingRandom();
+	testingParkMillerWithShuffle();
 
     return 0;
+}
+
+void testingParkMillerWithShuffle(){
+	double Expiry=1;
+	double Strike=100;
+	double Spot=100;
+	ParametersConstant VolParam(0.1);
+	ParametersConstant rParam(0);
+	unsigned long NumberOfPaths=100000;
+
+	PayOffCall payOffCall(Strike);
+
+	VanillaOption theOption(payOffCall, Expiry);
+
+	StatisticsMean gatherer;
+	ConvergenceTable gathererTwo(gatherer);
+
+	RandomParkMillerWithShuffle generator(1);
+	AntiThetic GenTwo(generator);
+
+	SimpleMonteCarlo(theOption, Spot,VolParam,rParam,NumberOfPaths, gathererTwo, GenTwo);
+
+	vector<vector<double> > results = gathererTwo.GetResultSoFar();
+
+	cout <<"\nFor the call price the results are " << endl;
+
+	for (unsigned long i=0; i < results.size(); i++)
+		{
+			for (unsigned long j=0; j < results[i].size(); j++)
+			cout << results[i][j] << " ";
+			cout << "\n";
+		}
+
 }
 
 void newtonRaphsonMain(){
@@ -242,7 +277,7 @@ void testingRandom(){
 	StatisticsMean gatherer;
 	ConvergenceTable gathererTwo(gatherer);
 
-	RandomParkMiller generator(1, 1564);
+	RandomParkMiller generator(1);
 	AntiThetic GenTwo(generator);
 
 	SimpleMonteCarlo(theOption, Spot,VolParam,rParam,NumberOfPaths, gathererTwo, GenTwo);
@@ -250,6 +285,7 @@ void testingRandom(){
 	vector<vector<double> > results = gathererTwo.GetResultSoFar();
 
 	cout <<"\nFor the call price the results are " << endl;
+	cout << "results[0][0] = "<< results[0][0]<< endl;
 
 	for (unsigned long i=0; i < results.size(); i++)
 		{

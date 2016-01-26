@@ -8,12 +8,13 @@
 
 #include "ParkMillerWithShuffling.h"
 #include "../utils/Arrays.h"
+#include  <iostream>
 
 const long a = 16807;
 const long m = 2147483647;
 const long q = 127773;
 const long r = 2836;
-const unsigned long ntab = 32;
+const long ntab = 32;
 const long ndiv = (1 + (m-1)/ntab);
 
 /*
@@ -27,7 +28,8 @@ ParkMillerWithShuffle::ParkMillerWithShuffle(long Seed_): Seed(Seed_){
 	if(Seed == 0) Seed = 1;
 	nextElement=0;
 
-	for(unsigned long j=ntab + 7;j>=0;j--){
+	for(long j=ntab + 7;j>=0;j--){
+		//std::cout<< "j= " <<j<< std::endl;
 		k=Seed/q;
 		Seed = a*(Seed - k*q)- r*k;
 
@@ -49,7 +51,7 @@ void ParkMillerWithShuffle::SetSeed(long Seed_){
 
 	if(Seed == 0) Seed = 1;
 
-	for(unsigned long j=ntab + 7;j>=0;j--){
+	for(long j=ntab + 7;j>=0;j--){
 		k=Seed/q;
 		Seed = a*(Seed - k*q)- r*k;
 
@@ -87,3 +89,46 @@ long ParkMillerWithShuffle::GetOneRandomInteger(){
 
 	return random;
 }
+
+RandomParkMillerWithShuffle::RandomParkMillerWithShuffle(unsigned long Dimensionality, unsigned long Seed) :
+        RandomBase(Dimensionality),
+        InnerGenerator(Seed),
+        InitialSeed(Seed)
+{
+    //std::cout<< "I am here." << std::endl;
+    Reciprocal = 1/(1.0 + InnerGenerator.Max());
+}
+
+RandomBase* RandomParkMillerWithShuffle::clone() const{
+	return new RandomParkMillerWithShuffle(*this);
+}
+
+void RandomParkMillerWithShuffle::GetUniforms(MJArray& variates){
+    for (unsigned long j=0;j<GetDimensionality();j++){
+        variates[j]=InnerGenerator.GetOneRandomInteger()*Reciprocal;
+    }
+}
+
+void RandomParkMillerWithShuffle::Skip(unsigned long numberOfPaths){
+    MJArray tmp(GetDimensionality());
+    for(unsigned long j=0;j<numberOfPaths;j++){
+        GetUniforms(tmp);
+    }
+
+}
+
+void RandomParkMillerWithShuffle::SetSeed(unsigned long Seed){
+    InitialSeed = Seed;
+    InnerGenerator.SetSeed(Seed);
+}
+
+void RandomParkMillerWithShuffle::Reset(){
+    InnerGenerator.SetSeed(InitialSeed);
+}
+
+void RandomParkMillerWithShuffle::ResetDimensionality(unsigned long NewDimensionality){
+    RandomBase::ResetDimensionality(NewDimensionality);
+    InnerGenerator.SetSeed(InitialSeed);
+}
+
+

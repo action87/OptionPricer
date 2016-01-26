@@ -34,7 +34,7 @@ void SimpleMonteCarlo(const VanillaOption& TheOption,
 
     for (unsigned long i=0; i < NumberOfPaths; i++){
         generator.GetGaussians(VariateArray);
-        //cout<< VariateArray[0]<< endl;
+        //cout<< "Random = " << VariateArray[0]<< endl;
         thisSpot = movedSpot*exp( rootVariance*VariateArray[0]);
         //cout<< "thisSpot= " << thisSpot << endl;
         double thisPayoff = TheOption.OptionPayOff(thisSpot);
