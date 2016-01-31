@@ -21,7 +21,10 @@
 #include "../utils/Bisection.h"
 #include "../utils/NewtonRaphson.h"
 #include "../random/ParkMillerWithShuffling.h"
-
+#include "../payoff/PayOffConstructible.h"
+#include "../payoff/PayOffFactory.h"
+#include "../payoff/PayOff.h"
+#include "../payoff/PayOffBridge.h"
 
 using namespace std;
 
@@ -35,13 +38,25 @@ void treeMain();
 void bisectionMain();
 void newtonRaphsonMain();
 void testingParkMillerWithShuffle();
+void testingFactory();
 
 int main(){
 
-	testingRandom();
-	testingParkMillerWithShuffle();
+	testingFactory();
 
     return 0;
+}
+
+void testingFactory(){
+	double Strike = 100;
+	string name="call";
+
+	PayOff* PayOffPtr = PayOffFactory::Instance().CreatePayOff(name, Strike);
+
+	if(PayOffPtr != NULL){
+		double Spot = 150;
+		cout << "PayOffPtr->operator ()(Spot) = " << PayOffPtr->operator ()(Spot) << endl;
+	}
 }
 
 void testingParkMillerWithShuffle(){
